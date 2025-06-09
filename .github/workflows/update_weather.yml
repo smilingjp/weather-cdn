@@ -24,13 +24,11 @@ jobs:
       - name: Run the weather update script
         run: python weather_script.py
 
-      - name: Configure Git
+      - name: Commit and push changes
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+         git config user.name "github-actions"
+         git config user.email "github-actions@github.com"
+         git add weather.json
+         git diff --cached --quiet || git commit -m "Auto-update weather data"
+         git push https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }} HEAD:main
 
-      - name: Commit and push if changed
-        run: |
-          git add weather.json
-          git diff --cached --quiet || git commit -m "Auto-update weather data"
-          git push
